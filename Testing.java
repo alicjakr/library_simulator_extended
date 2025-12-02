@@ -1,9 +1,12 @@
 import org.junit.Test;
 
+import java.time.LocalDate;
+
 public class Testing {
 
     Library library = new Library();
     library.createUsers();
+
 
     @Test
     public void testCreateUsers() {
@@ -11,11 +14,24 @@ public class Testing {
     }
 
     @Test
-    void borrowItem() {
+    public void testDaysOverdue() {
 
     }
 
     @Test
-    void returnItem() {
+    public void testBorrowItem() {
+        User student=new Student();
+        Book book=new Book();
+        LocalDate borrowDate=LocalDate.now();
+        library.borrowItem(student,book,borrowDate);
+        if(student.returnsOnTime) {
+            assert(
+        } else {
+
+        }
+    }
+
+    @Test
+    public void returnItem() {
     }
 }
