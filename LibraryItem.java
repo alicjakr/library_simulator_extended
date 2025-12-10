@@ -1,7 +1,7 @@
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-abstract class LibraryItem {
+sealed abstract class LibraryItem implements Searchable, Comparable<LibraryItem> permits Book, Journal, Film {
     int libraryID;
     LocalDate borrowDate;
     boolean borrowed;
@@ -35,4 +35,36 @@ abstract class LibraryItem {
         }
         return 0.0;
     }
+
+    //compareTo
+    @Override
+    public int compareTo(LibraryItem o) {
+        int result=this.title.compareTo(o.title);
+        if(result==0) {
+            //compare what item type it is -> if film, highest, if not -> between journal and book, if journal -> higher than book
+            //instanceof
+            //im so lost here
+
+            if(o instanceof Film && this instanceof Journal || this instanceof Book) {
+                //o greater than this
+            } else if(o instanceof Journal && this instanceof Book) {
+                //o greater than this
+            }
+
+            if(this.year!=null && o.year!=null && result==0) {
+                result=this.year>o.year ? 1 : this.year<o.year ? -1 : 0;
+            }
+        }
+        return result;
+    }
+
+    /*
+   if two Jedis are named the same, then you can use their age to decide which goes first and which goes second.
+    public int compareTo(Jedi jedi){
+        int result = this.name.compareTo(jedi.getName());
+        if(result == 0){
+            result = this.age > jedi.age ? 1 : this.age < jedi.age ? -1 : 0;
+        }
+        return result;
+    }*/
 }
