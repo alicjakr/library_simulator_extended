@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Library {
     //80 students, 20 faculty members
@@ -187,5 +188,36 @@ public class Library {
         item.borrowDate=null;
 
         return fine;
+    }
+
+    public List<LibraryItem> search(String keyword) {
+        List<LibraryItem> items=new ArrayList<>();
+        items.addAll(books);
+        items.addAll(journals);
+        items.addAll(films);
+
+        return items.stream().filter(item->item.matches(keyword)).collect(Collectors.toList());
+    }
+
+    public List<LibraryItem> getSortedCatalog() {
+        List<LibraryItem> items=new ArrayList<>();
+        items.addAll(books);
+        items.addAll(journals);
+        items.addAll(films);
+        items.sort(null);
+        return items;
+    }
+
+    private List<OverdueObserver> observers=new ArrayList<>();
+    public void addOverdueObserver(OverdueObserver o) {
+        observers.add(o);
+    }
+    public void removeOverdueObserver(OverdueObserver o) {
+        observers.remove(o);
+    }
+    void notifyObserver(User user, LibraryItem item, int daysLate) {
+        for(OverdueObserver o: observers) {
+            o.notifyOverdue(user, item, daysLate);
+        }
     }
 }

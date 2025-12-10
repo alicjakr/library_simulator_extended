@@ -1,3 +1,6 @@
+import java.util.HashSet;
+import java.util.Set;
+
 public class Main {
     public static void main(String[] args) throws Exception {
         //create library
@@ -8,6 +11,21 @@ public class Main {
         System.out.println("Amount of books: "+library.books.size());
         System.out.println("Amount of journals: "+library.journals.size());
         System.out.println("Amount of films: "+library.films.size());
+
+        //add observes
+        library.addOverdueObserver(new EmailNotifier());
+        //anonymous inner class - attaching a temporary event observer
+        library.addOverdueObserver(new OverdueObserver() {
+            private final Set<String> notifiedLoans=new HashSet<>();
+            @Override
+            public void notifyOverdue(User user, LibraryItem item, int daysLate) {
+                String key=System.identityHashCode(user)+"-"+item.getTitle();
+                if(!notifiedLoans.contains(key)) {
+                    System.out.println("[FIRST OVERDUE ALERT] for item "+item.getTitle()+" is - "+daysLate+" days overdue.");
+                    notifiedLoans.add(key);
+                }
+            }
+        });
 
         System.out.println("\nStarting the simulation...\n");
         Simulation simulation=new Simulation(library);

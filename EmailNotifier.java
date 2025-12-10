@@ -1,10 +1,8 @@
 public final class EmailNotifier implements OverdueObserver {
     //prints overdue warnings (simulated email notifications)
-    //pseudocode so far
+    @Override
     public void notifyOverdue(User user, LibraryItem item, int daysLate) {
-        daysLate=item.isOverdue(/*date of check*/); //what should go here?
-        if(daysLate!=0) {
-                System.out.println(user+"'s item "+item+" is "+daysLate+" days overdue.");
-        }
+        String userType=(user instanceof Student) ? "Student" : "Faculty Member";
+        System.out.println(user+"'s item "+item.getTitle()+" is "+daysLate+" days overdue.");
     }
 }

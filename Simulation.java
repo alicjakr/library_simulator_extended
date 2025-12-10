@@ -1,11 +1,12 @@
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Simulation {
     Library library;
     Random random;
+
+    //tracking notified items
+    private Set<String> overdueNotified=new HashSet<>();
 
     final double BOOK_PROBABILITY=0.05;
     final double JOURNAL_PROBABILITY=0.08;
@@ -29,6 +30,8 @@ public class Simulation {
                 tryReturnUser(user, currentDate);
                 //check due date
                 checkReliableUserReturns(user, currentDate);
+                //check overdue items and notify
+                checkOverdueItems(user, currentDate);
             }
         }
     }
@@ -143,5 +146,24 @@ public class Simulation {
                 }
             }
         }
+    }
+
+    //check overdue items and notify
+    private void checkOverdueItems(User user, LocalDate currentDate) throws Exception {
+        List <LibraryItem> borrowedItems=new ArrayList<>();
+        borrowedItems.addAll(user.borrowedBooks);
+        borrowedItems.addAll(user.borrowedJournals);
+        borrowedItems.addAll(user.borrowedFilms);
+        for(LibraryItem item : borrowedItems) {
+            int daysLate=item.daysOverdue(currentDate);
+            if(daysLate>0) {
+                String key=System.identityHashCode(user)+"-"+item.getTitle();
+                if(!overdueNotified.contains(key)) {
+                    library.notifyObserver(user, item, daysLate);
+                    overdueNotified.add(key);
+                }
+            }
+        }
+
     }
 }

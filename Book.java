@@ -4,6 +4,16 @@ public final class Book extends LibraryItem implements Loanable {
     String genre;
     String publisher;
 
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public int getYear() {
+        return 0;
+    }
+
     @Override    
     int getLoanPeriodDays() {
         return 14;
@@ -23,11 +33,13 @@ public final class Book extends LibraryItem implements Loanable {
     //returns true if the keyword appears in any relevant metadata field (title, author, director, publisher, genre, etc.)
     @Override
     public boolean matches(String keyword) {
-        boolean match=false;
-        if(keyword.equals(title)) match=true;
-        else if(keyword.equals(author)) match=true;
-        else if(keyword.equals(genre)) match=true;
-        else if(keyword.equals(publisher)) match=true;
-        return match;
+        if(keyword==null || keyword.isEmpty()) {
+            return false;
+        }
+
+        String lower=keyword.toLowerCase();
+
+        return (title!=null && title.toLowerCase().contains(lower)) || (author!=null && author.toLowerCase().contains(lower)) ||
+                (genre!=null && genre.toLowerCase().contains(lower)) || (publisher!=null && publisher.toLowerCase().contains(lower));
     }
 }

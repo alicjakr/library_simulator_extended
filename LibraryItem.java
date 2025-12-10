@@ -7,6 +7,10 @@ sealed abstract class LibraryItem implements Searchable, Comparable<LibraryItem>
     boolean borrowed;
     User borrower;
 
+    //abstract getters
+    public abstract String getTitle();
+    public abstract int getYear();
+
     //for each subclass
     abstract int getLoanPeriodDays();
 
@@ -39,23 +43,25 @@ sealed abstract class LibraryItem implements Searchable, Comparable<LibraryItem>
     //compareTo
     @Override
     public int compareTo(LibraryItem o) {
-        int result=this.title.compareTo(o.title);
+        //compare titles
+        int result=this.getTitle().compareToIgnoreCase(o.getTitle());
         if(result==0) {
             //compare what item type it is -> if film, highest, if not -> between journal and book, if journal -> higher than book
-            //instanceof
-            //im so lost here
-
-            if(o instanceof Film && this instanceof Journal || this instanceof Book) {
-                //o greater than this
-            } else if(o instanceof Journal && this instanceof Book) {
-                //o greater than this
-            }
-
-            if(this.year!=null && o.year!=null && result==0) {
-                result=this.year>o.year ? 1 : this.year<o.year ? -1 : 0;
-            }
+            if(o.getTypeOrder()!=this.getTypeOrder()) return this.getTypeOrder()-o.getTypeOrder();
+            //compare years
+            if(this.getYear()!=0 && o.getYear()!=0) return Integer.compare(this.getYear(), o.getYear());
+            return 0;
         }
         return result;
+    }
+
+    private int getTypeOrder() {
+        return switch (this) {
+            case Book book -> 1;
+            case Journal journal -> 2;
+            case Film film -> 3;
+            default -> 0;
+        };
     }
 
     /*
