@@ -16,10 +16,10 @@ public final class Film extends LibraryItem implements Loanable {
         return year;
     }
 
-    @Override
+    /*@Override
     int getLoanPeriodDays() {
         return 2;
-    }
+    }*/
 
     @Override
     public int getLoanPeriod(User user) {

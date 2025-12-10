@@ -15,14 +15,14 @@ public final class Journal extends LibraryItem implements Loanable {
         return 0;
     }
 
-    @Override
+    /*@Override
     int getLoanPeriodDays() {
         if(borrower instanceof Student) {
             return 3;
         } else {
             return 7;
         }
-    }
+    }*/
 
     @Override
     public int getLoanPeriod(User user) {

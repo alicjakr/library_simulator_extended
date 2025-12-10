@@ -14,10 +14,10 @@ public final class Book extends LibraryItem implements Loanable {
         return 0;
     }
 
-    @Override    
+    /*@Override
     int getLoanPeriodDays() {
         return 14;
-    }
+    }*/
 
     @Override
     public int getLoanPeriod(User user) {

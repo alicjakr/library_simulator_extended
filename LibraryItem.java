@@ -12,7 +12,7 @@ sealed abstract class LibraryItem implements Searchable, Comparable<LibraryItem>
     public abstract int getYear();
 
     //for each subclass
-    abstract int getLoanPeriodDays();
+    //abstract int getLoanPeriodDays();
 
     //returns num of days item is overdue -> if negative, item can still be out for that many days
     public int daysOverdue(LocalDate currentDate) throws Exception {
@@ -20,7 +20,7 @@ sealed abstract class LibraryItem implements Searchable, Comparable<LibraryItem>
             throw new Exception("Not valid ask");
         }
         long daysBorrowed=ChronoUnit.DAYS.between(borrowDate, currentDate);//currentdate-borroweddate
-        return (int)daysBorrowed-getLoanPeriodDays();
+        return (int)daysBorrowed-((Loanable)this).getLoanPeriod(borrower);
     }
 
     //return whether item is overdue on given day
